@@ -1,4 +1,5 @@
 require('dotenv').config();
+const bcrypt = require('bcrypt');
 const cors = require("cors");
 const express = require("express");
 const bodyParser = require('body-parser')
@@ -6,24 +7,7 @@ const app = express();
 const port = 3000;
 
 // Database
-const mongoose = require('mongoose');
-const password = process.env.DB_PASSWORD;
-const username = process.env.DB_USER;
-const dbName = process.env.DB_NAME;
-const uri = `mongodb+srv://${username}:${password}@cluster0.rxnku.mongodb.net/${dbName}?retryWrites=true&w=majority`;
-
-mongoose.connect(uri).then((() => {
-    console.log("Connected to database!");
-})).catch(err => {
-    console.log("Connection failed!", err);
-});
-
-const userSchema = new mongoose.Schema({
-    email: String,
-    password: String
-});
-
-const userModel = mongoose.model('User', userSchema);
+const { userModel } = require("./mongo");
 
 
 // Middelware
@@ -38,9 +22,11 @@ app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
 
-function signup(req, res) {
+async function signup(req, res) {
     const email = req.body.email;
     const password = req.body.password;
+
+    const hashedPassword = await hashPassword(password);
 
     if (email === "") {
         res.status(400).send("Email is required");
@@ -52,13 +38,18 @@ function signup(req, res) {
         return
     }
 
-    const user = new userModel({ email: email, password: password });
+    const user = new userModel({ email: email, password: hashedPassword });
     user
         .save()
         .then(res => console.log("User saved successfully", res))
         .catch(err => console.log("Error saving user", err));
 
     res.send({ message: 'User signup with email: ' + email });
+}
+
+function hashPassword(password) {
+    const saltRounds = 10;
+    return bcrypt.hash(password, saltRounds);
 }
 
 function login(req, res) {
