@@ -1,5 +1,6 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const cors = require("cors");
 const express = require("express");
 const bodyParser = require('body-parser')
@@ -7,7 +8,7 @@ const app = express();
 const port = 3000;
 
 // Database
-const { userModel } = require("./mongo");
+const { newUser } = require("./mongo");
 
 
 // Middelware
@@ -23,28 +24,30 @@ app.listen(port, () => {
 });
 
 async function signup(req, res) {
-    const email = req.body.email;
-    const password = req.body.password;
+    try {
+        const email = req.body.email;
+        const password = req.body.password;
 
-    const hashedPassword = await hashPassword(password);
+        const hashedPassword = await hashPassword(password);
 
-    if (email === "") {
-        res.status(400).send("Email is required");
-        return
+        if (email === "") {
+            res.status(400).send("Email is required");
+            return
+        }
+
+        if (password === "") {
+            res.status(400).send("Password is required");
+            return
+        }
+
+        const user = new newUser({ email: email, password: hashedPassword });
+        user
+            .save()
+            .then(() => res.status(201).send({ message: 'User signup with email: ' + email }))
+            .catch((err) => res.status(409).send({ message: "User already registered: " + err }));
+    } catch (err) {
+        res.status(500).send({ message: "Internal error ", err })
     }
-
-    if (password === "") {
-        res.status(400).send("Password is required");
-        return
-    }
-
-    const user = new userModel({ email: email, password: hashedPassword });
-    user
-        .save()
-        .then(res => console.log("User saved successfully", res))
-        .catch(err => console.log("Error saving user", err));
-
-    res.send({ message: 'User signup with email: ' + email });
 }
 
 function hashPassword(password) {
@@ -52,14 +55,41 @@ function hashPassword(password) {
     return bcrypt.hash(password, saltRounds);
 }
 
-function login(req, res) {
-    res.send({
-        userId: 'string',
-        token: 'token'
+async function login(req, res) {
+    try {
+        const email = req.body.email;
+        const password = req.body.password;
+        const user = await newUser.findOne({ email: email })
+        bcrypt.compare(password, user.password, (err, result) => {
+            if (err) {
+                res.status(401).send({ message: "Incorrect email or password " + err })
+            }
+            if (result) {
+                const token = createToken(email)
+                res.status(200).send({
+                    userId: user?._id,
+                    token: token
+                })
+            }
+        })
+    } catch (err) {
+        res.status(500).send({ message: "Internal error", err })
     }
-    );
 }
 
+function createToken(email) {
+    const jwtPassword = process.env.JWT_PASSWORD;
+    return jwt.sign({ email: email }, jwtPassword, { expiresIn: '1h' });
+}
+
+
+// newUser.deleteMany({}).then(() => console.log("Removed all users"));
+
+
 function getSauces(req, res) {
+    req.get(sauces)
+    sauces.forEach(sauce => {
+        console.log(sauce);
+    });
     res.send('Hello World!');
 }
