@@ -87,9 +87,25 @@ function createToken(email) {
 
 
 function getSauces(req, res) {
-    req.get(sauces)
-    sauces.forEach(sauce => {
-        console.log(sauce);
+    const header = req.header('Authorization');
+    if (!header) {
+        res.status(401).send({ message: "You must be logged in" })
+    }
+    const token = header.split(' ')[1];
+    if (!token) {
+        res.status(401).send({ message: "No token provided" })
+    }
+
+    jwt.verify(token, process.env.JWT_PASSWORD, (err, decoded) => {
+        handleTokenError(err, res, decoded);
     });
-    res.send('Hello World!');
+}
+
+function handleTokenError(err, res, decoded) {
+    if (err) {
+        res.status(401).send({ message: "Invalid token" })
+    }
+    if (decoded) {
+        res.status(200).send({ message: "You are logged in" })
+    }
 }
