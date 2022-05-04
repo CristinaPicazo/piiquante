@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { newUser } = require('../mongo');
-const bcrypt = require('bcrypt'); //login
-const jwt = require('jsonwebtoken'); //login,getSauces
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 async function login(req, res) {
     try {
@@ -29,5 +29,7 @@ function createToken(email) {
     const jwtPassword = process.env.JWT_PASSWORD;
     return jwt.sign({ email: email }, jwtPassword, { expiresIn: '24h' });
 }
+
+
 
 module.exports = { login };

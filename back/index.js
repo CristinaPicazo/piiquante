@@ -1,8 +1,10 @@
+require('dotenv').config();
 const { app, express } = require("./server");
-const port = 3000;
 const cors = require("cors");
 const bodyParser = require('body-parser');
-const jsonParser = bodyParser.json();
+const { checkToken } = require('./middleware/checkToken');
+
+const port = 3000;
 
 // Database
 require("./mongo");
@@ -10,19 +12,20 @@ require("./mongo");
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
 
 // Controllers
 const { signup } = require("./controllers/signup");
 const { login } = require("./controllers/login");
-const { getSauces, authentification } = require("./controllers/getSauces");
+const { getSauces } = require("./controllers/getSauces");
 const { createSauce } = require("./controllers/createSauce");
 
 // Routes
 app.post('/api/auth/signup', signup);
 app.post('/api/auth/login', login);
-app.get('/api/sauces', getSauces);
+app.get('/api/sauces', checkToken, getSauces);
 // app.get('/api/sauces/:id', getSauce);
-app.post('/api/sauces', jsonParser, createSauce);
+app.post('/api/sauces', checkToken, createSauce);
 // app.put('/api/sauces/:id', updateSauce);
 // app.delete('/api/sauces/:id', deleteSauce);
 // app.post('/api/sauces/:id/like', likeSauce);

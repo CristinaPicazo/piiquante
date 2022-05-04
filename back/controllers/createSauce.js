@@ -1,21 +1,11 @@
-const mongoose = require('mongoose');
+const { Product } = require('../models/Product.js');
 
-const productSchema = new mongoose.Schema({
-    userId: String,
-    name: String,
-    manufacturer: String,
-    description: String,
-    mainPepper: String,
-    imageUrl: String,
-    heat: Number,
-    likes: Number,
-    dislikes: Number,
-    usersLiked: [String],
-    usersDisliked: [String],
-})
-const Product = mongoose.model('Product', productSchema);
+
 
 function createSauce(req, res) {
+    const name = req.body.name;
+    const manufacturer = req.body.manufacturer;
+    // res.send(req.body);
     // const sauce: String,
     // const image: File,
     const product = new Product({
@@ -36,4 +26,4 @@ function createSauce(req, res) {
         .catch((err) => console.log('error', err))
 }
 
-module.exports = { createSauce, Product, productSchema };
+module.exports = { createSauce };
