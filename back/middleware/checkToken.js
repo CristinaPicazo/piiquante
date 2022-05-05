@@ -15,8 +15,8 @@ function checkToken(req, res, next) {
         if (err) {
             return res.status(401).send({ message: "Invalid token" + err })
         }
-        next();
     });
+    next()
 }
 
 module.exports = { checkToken };

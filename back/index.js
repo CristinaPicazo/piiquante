@@ -12,6 +12,7 @@ require("./mongo");
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Controllers
@@ -25,7 +26,7 @@ app.post('/api/auth/signup', signup);
 app.post('/api/auth/login', login);
 app.get('/api/sauces', checkToken, getSauces);
 // app.get('/api/sauces/:id', getSauce);
-app.post('/api/sauces', checkToken, createSauce);
+app.post('/api/new-sauce', checkToken, createSauce);
 // app.put('/api/sauces/:id', updateSauce);
 // app.delete('/api/sauces/:id', deleteSauce);
 // app.post('/api/sauces/:id/like', likeSauce);
