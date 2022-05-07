@@ -1,29 +1,35 @@
-const multer = require('multer');
-const upload = multer({ dest: '../uploads' });
 const { Product } = require('../models/Product.js');
 
+function makeImageUrl(req, fileName) {
+    return req.protocol + "://" + req.get("host") + "/images/" + fileName;
+}
+
 function createSauce(req, res) {
-    upload.single('imageUrl')(req, res => {
-        console.log('userId:', userId)
-        console.log('name:', name)
-        const { userId, name, manufacturer, description, mainPepper, imageUrl, heat, likes, dislikes, usersLiked, usersDisliked } = req.body;
-        const newProduct = new Product({
-            userId,
-            name,
-            manufacturer,
-            description,
-            mainPepper,
-            imageUrl,
-            heat,
-            likes,
-            dislikes,
-            usersLiked: [],
-            usersDisliked: [],
-        });
-        newProduct.save()
-            .then(product => res.send(product))
-            .catch(err => res.send(err))
+    const { body, file } = req;
+    const { fileName } = file;
+    const sauce = JSON.parse(body.sauce);
+    const { userId, name, manufacturer, description, mainPepper, heat } = sauce;
+
+    const newProduct = new Product({
+        userId,
+        name,
+        manufacturer,
+        description,
+        mainPepper,
+        imageUrl: makeImageUrl(req, fileName),
+        heat,
+        likes: 0,
+        dislikes: 0,
+        usersLiked: [],
+        usersDisliked: [],
     });
+    newProduct
+        .save()
+        .then((message) => {
+            res.status(201).send({ message: message });
+            console.log("Sauce created: ", message);
+        })
+        .catch(err => res.send(err))
 
 
     // res.send(req.body);
