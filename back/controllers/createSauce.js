@@ -30,28 +30,5 @@ function createSauce(req, res) {
             console.log("Sauce created: ", message);
         })
         .catch(err => res.send(err))
-
-
-    // res.send(req.body);
-    // const sauce: String,
-    // const image: File,
-
-    //     const product = new Product({
-    //         userId: 'chocolate',
-    //         name: 'chocolate',
-    //         manufacturer: 'chocolate',
-    //         description: 'chocolate',
-    //         mainPepper: 'chocolate',
-    //         imageUrl: 'chocolate',
-    //         heat: 2,
-    //         likes: 2,
-    //         dislikes: 2,
-    //         usersLiked: ['milka'],
-    //         usersDisliked: ['milka'],
-    //     })
-    //     product.save()
-    //         .then((res) => console.log('sauce created', res))
-    //         .catch((err) => console.log('error', err))
-    // }
 }
 module.exports = { createSauce };

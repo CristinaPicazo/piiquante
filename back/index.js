@@ -25,6 +25,7 @@ const { getSauces } = require("./controllers/getSauces");
 const { getSauceById } = require("./controllers/getSauceById");
 const { createSauce } = require("./controllers/createSauce");
 const { deleteSauce } = require("./controllers/deleteSauce");
+const { updateSauce } = require("./controllers/updateSauce");
 
 // Routes
 app.post('/api/auth/signup', signup);
@@ -32,7 +33,7 @@ app.post('/api/auth/login', login);
 app.get('/api/sauces', checkToken, getSauces);
 app.get('/api/sauces/:id', checkToken, getSauceById);
 app.post('/api/sauces', checkToken, upload.single("image"), createSauce);
-// app.put('/api/sauces/:id', checkToken, updateSauce);
+app.put('/api/sauces/:id', checkToken, upload.single("image"), updateSauce);
 app.delete('/api/sauces/:id', checkToken, deleteSauce);
 // app.post('/api/sauces/:id/like', checkToken, likeSauce);
 
