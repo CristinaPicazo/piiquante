@@ -1,5 +1,5 @@
-const { Product } = require('../models/Product.js');
-const unlink  = require('fs').promises.unlink;
+const { Product } = require('../../models/Product.js');
+const unlink = require('fs').promises.unlink;
 
 function deleteSauce(req, res) {
     const { id } = req.params;
@@ -12,7 +12,7 @@ function deleteSauce(req, res) {
 }
 
 function deleteImage(product) {
-    const  imageUrl  = product.imageUrl;
+    const imageUrl = product.imageUrl;
     const filetoDelete = imageUrl.split('/').at(-1);
     return unlink(`images/${filetoDelete}`).then(() => product);
 }

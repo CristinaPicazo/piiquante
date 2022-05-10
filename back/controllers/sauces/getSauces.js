@@ -1,4 +1,4 @@
-const { Product } = require('../models/Product.js');
+const { Product } = require('../../models/Product.js');
 
 function getSauces(req, res) {
     Product.find({})

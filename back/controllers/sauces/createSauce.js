@@ -1,4 +1,4 @@
-const { Product } = require('../models/Product.js');
+const { Product } = require('../../models/Product.js');
 
 function makeImageUrl(req, fileName) {
     return req.protocol + "://" + req.get("host") + "/images/" + fileName;
@@ -29,6 +29,6 @@ function createSauce(req, res) {
             res.status(201).send({ message: message });
             console.log("Sauce created: ", message);
         })
-        .catch(err => res.send(err))
+        .catch(err => res.status(500).send(err))
 }
 module.exports = { createSauce };

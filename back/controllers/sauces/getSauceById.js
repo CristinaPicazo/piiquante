@@ -1,4 +1,4 @@
-const { Product } = require('../models/Product.js');
+const { Product } = require('../../models/Product.js');
 
 function getSauceById(req, res) {
     const { id } = req.params;
@@ -6,5 +6,6 @@ function getSauceById(req, res) {
         .then(product => res.send(product))
         .catch(err => res.send(err))
 }
+
 
 module.exports = { getSauceById };

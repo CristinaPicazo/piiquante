@@ -1,4 +1,4 @@
-const multer = require('multer');
+const multer = require("multer");
 
 const storeage = multer.diskStorage({
     destination: 'images/',
@@ -6,12 +6,13 @@ const storeage = multer.diskStorage({
         cb(null, makeFilename(req, file));
     }
 });
-const upload = multer({ storeage: storeage });
 
 function makeFilename(req, file) {
     const fileName = `${Date.now()}-${file.originalname}`.replace(/\s/g, '-');
     file.fileName = fileName;
     return fileName
 }
+
+const upload = multer({ storeage });
 
 module.exports = { upload }

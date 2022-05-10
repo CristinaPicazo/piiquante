@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
 
 const password = process.env.DB_PASSWORD;
 const username = process.env.DB_USER;
@@ -11,14 +10,3 @@ mongoose.connect(uri).then((() => {
 })).catch(err => {
     console.log("Connection failed!", err);
 });
-
-const userSchema = new mongoose.Schema({
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
-});
-
-userSchema.plugin(uniqueValidator);
-
-const newUser = mongoose.model('User', userSchema);
-
-module.exports = { mongoose, newUser }

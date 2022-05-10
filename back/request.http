@@ -14,3 +14,8 @@ content-type: application/json
     "email": "",
     "password": ""
 }
+
+###
+DELETE http://localhost:3000/api/sauce/627ab2fd3264a3b6a1da43e3 HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2E0YmZkMzI2NjVhYjM5YjYzNmQyMyIsImlhdCI6MTQ5NjQ5NjQwOCwiZXhwIjoxNDk2NDk2NjA4fQ.
