@@ -1,7 +1,22 @@
 const { Product } = require('../../models/Product.js');
 const unlink = require('fs').promises.unlink;
+// const payload = makePayload(hasNewImage,req);
 
 function deleteSauce(req, res) {
+    if (product == null) return
+    console.log("Image deleted: ", product);
+    const imageToDelete = product.imageUrl.split('/').at(-1);
+    return unlink("images/" + imageToDelete)
+}
+
+function makePayload(hasNewImage, req) {
+    if (!hasNewImage) return req.body;
+    const payload = JSON.parse(req.body.sauce)
+    payload.imageUrl = makeImageUrl(req, req.file.fileName);
+    return payload;
+}
+
+/*
     const { id } = req.params;
     Product.findByIdAndDelete(id)
         .then(deleteImage)
@@ -10,11 +25,8 @@ function deleteSauce(req, res) {
         })
         .catch(err => res.send({ message: err }))
 }
+*/
 
-function deleteImage(product) {
-    const imageUrl = product.imageUrl;
-    const filetoDelete = imageUrl.split('/').at(-1);
-    return unlink(`images/${filetoDelete}`).then(() => product);
-}
+
 
 module.exports = { deleteSauce };

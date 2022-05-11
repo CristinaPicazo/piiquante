@@ -36,24 +36,27 @@ function hashPassword(password) {
 
 
 async function login(req, res) {
-    console.log('req.body', req.body)
     try {
         const email = req.body.email;
         const password = req.body.password;
         const user = await User.findOne({ email: email })
-        console.log('user:', user)
-        bcrypt.compare(password, user.password, (err, result) => {
-            if (err) {
-                res.status(401).send({ message: "Incorrect email or password " + err })
-            }
-            if (result) {
-                const token = createToken(email)
-                res.status(200).send({
-                    userId: user?._id,
-                    token: token
+            .then(user => {
+                if (!user) {
+                    return res.status(401).send({ message: "User not found" });
+                }
+                bcrypt.compare(password, user.password, (err, result) => {
+                    if (!result) {
+                        return res.status(500).send({ message: "Incorrect password " + err })
+                    }
+                    if (result) {
+                        const token = createToken(email)
+                        res.status(200).send({
+                            userId: user?._id,
+                            token: token
+                        })
+                    }
                 })
-            }
-        })
+            });
     } catch (err) {
         console.log('err:', err)
         res.status(500).send({ message: "Internal error", err })

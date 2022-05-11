@@ -6,8 +6,13 @@ function makeImageUrl(req, fileName) {
 
 function createSauce(req, res) {
     const { body, file } = req;
-    const { fileName } = file;
+    if (!file) {
+        return res.status(400).send({ message: "Image is required" });
+    }
+    const {fileName} = file;
     const sauce = JSON.parse(body.sauce);
+
+    // const file.fieldname = `${body.userId}-${Date.now()}-${file.originalname}`.replace(/\s/g, '-');
     const { userId, name, manufacturer, description, mainPepper, heat } = sauce;
 
     const newProduct = new Product({
@@ -16,7 +21,7 @@ function createSauce(req, res) {
         manufacturer,
         description,
         mainPepper,
-        imageUrl: makeImageUrl(req, fileName),
+        imageUrl: makeImageUrl(req, file.fileName),
         heat,
         likes: 0,
         dislikes: 0,

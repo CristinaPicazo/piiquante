@@ -9,7 +9,6 @@ function checkToken(req, res, next) {
     if (!token) {
         res.status(401).send({ message: "No token provided" })
     }
-    console.log('token:', token)
 
     jwt.verify(token, process.env.JWT_PASSWORD, (err, decoded) => {
         if (err) {

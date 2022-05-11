@@ -1,11 +1,20 @@
 const { Product } = require('../../models/Product.js');
 
+
 function getSauceById(req, res) {
-    const { id } = req.params;
-    Product.findById(id)
-        .then(product => res.send(product))
-        .catch(err => res.send(err))
+    getSauceById(req,res)
+    .then((product) => sendClientResponse(product, res))
+    .catch(err => res.status(500).send(err))
+
+}
+
+function sendClientResponse(product, res) {
+    if(product == null) {
+        res.status(404).send({ message: "Sauce not found" });
+    }
+    return Promise.resolve(res.status(200).send(product).then(() => product));
+
 }
 
 
-module.exports = { getSauceById };
+module.exports = { getSauceById, sendClientResponse };
