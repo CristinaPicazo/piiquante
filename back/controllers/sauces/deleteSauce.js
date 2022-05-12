@@ -1,12 +1,15 @@
 const { Product } = require('../../models/Product.js');
+const { sendClientResponse } = require('./getSauceById.js');
 const unlink = require('fs').promises.unlink;
 // const payload = makePayload(hasNewImage,req);
 
 function deleteSauce(req, res) {
-    if (product == null) return
-    console.log("Image deleted: ", product);
-    const imageToDelete = product.imageUrl.split('/').at(-1);
-    return unlink("images/" + imageToDelete)
+    const { id } = req.params;
+    Product.findByIdAndDelete(id)
+    .then((product) => sendClientResponse(product, res))
+    .then((item) => deleleteImage(item))
+    .then((res) => res.send({ message: "File deleted", res }))
+    .catch((err) => res.status(500).send({ message: err }));
 }
 
 function makePayload(hasNewImage, req) {

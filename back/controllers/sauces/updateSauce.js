@@ -16,9 +16,9 @@ function updateSauce(req, res) {
 };
 
 function deleteImage(product) {
-    const imageUrl = product.imageUrl;
-    const filetoDelete = imageUrl.split('/').at(-1);
-    return unlink(`images/${filetoDelete}`).then(() => product);
+    if(product == null) return
+    const imageToDelete = product.imageUrl.split('/').at(-1);
+    return unlink(`images/${filetoDelete}`);
 }
 
 module.exports = { updateSauce };

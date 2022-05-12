@@ -27,7 +27,36 @@ function resetVote(product, userId, res) {
     if([usersLiked, usersDisliked].every((arr) => arr.includes(userId))) {
         return Promise.reject("User already voted");
     }
+    if(![usersLiked, usersDisliked].some((arr) => arr.includes(userId))) {
+        return Promise.reject("User already voted");
+    }
+    const votesToUpdate = usersLiked.includes(userId) ? product.likes : product.dislikes;
+votesToUpdate--
+usersLiked.includes(userId) ? product.likes = votesToUpdate : product.dislikes = votesToUpdate;
+
+let arrayToUpdate = usersLiked.includes(userId) ? usersLiked : usersDisliked;
+    const arrayWithoutUser = arrayToUpdate.filter((id) => id !== userId);
+    arrayToUpdate = arrayWithoutUser
+    return product;
 }
 
+function incrementVote(product, like, userId) {
+    const {usersLiked, usersDisliked} = product;
+    
+    const votesArray = like === 1 ? usersLiked : usersDisliked;
+    if(votesArray.includes(userId)) return
+    votesArray.push(userId);
+
+    let voteToUpdate
+    if (like === 1) {
+        voteToUpdate = product.likes
+        product.likes = ++voteToUpdate
+    } else {
+        voteToUpdate = product.dislikes
+        product.dislikes = ++voteToUpdate
+    }
+    return product
+
+}
 
 module.exports = {likeSauce};

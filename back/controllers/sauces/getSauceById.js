@@ -2,10 +2,15 @@ const { Product } = require('../../models/Product.js');
 
 
 function getSauceById(req, res) {
-    getSauceById(req,res)
+    getSauces(req,res)
     .then((product) => sendClientResponse(product, res))
     .catch(err => res.status(500).send(err))
 
+}
+
+function getSauces(req, res) {
+    const { id } = req.params;
+    return Product.findById(id)
 }
 
 function sendClientResponse(product, res) {
