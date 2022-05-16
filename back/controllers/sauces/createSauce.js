@@ -9,7 +9,7 @@ function createSauce(req, res) {
     if (!file) {
         return res.status(400).send({ message: "Image is required" });
     }
-    const {fileName} = file;
+    const { fileName } = file;
     const sauce = JSON.parse(body.sauce);
 
     // const file.fieldname = `${body.userId}-${Date.now()}-${file.originalname}`.replace(/\s/g, '-');
@@ -36,4 +36,4 @@ function createSauce(req, res) {
         })
         .catch(err => res.status(500).send(err))
 }
-module.exports = { createSauce };
+module.exports = { createSauce, makeImageUrl };

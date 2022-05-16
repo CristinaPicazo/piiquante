@@ -4,17 +4,18 @@ const unlink = require('fs').promises.unlink;
 // const payload = makePayload(hasNewImage,req);
 
 function deleteSauce(req, res) {
-    const { id } = req.params;
+    console.log('product:', product)
     Product.findByIdAndDelete(id)
-    .then((product) => sendClientResponse(product, res))
-    .then((item) => deleleteImage(item))
     .then((res) => res.send({ message: "File deleted", res }))
-    .catch((err) => res.status(500).send({ message: err }));
+        .then((product) => sendClientResponse(product, res))
+        // .then((item) => deleleteImage(item))
+        .catch((err) => res.status(500).send({ message: err }));
+
 }
 
 function makePayload(hasNewImage, req) {
-    if (!hasNewImage) return req.body;
     const payload = JSON.parse(req.body.sauce)
+    if (!hasNewImage) return req.body;
     payload.imageUrl = makeImageUrl(req, req.file.fileName);
     return payload;
 }
@@ -32,4 +33,4 @@ function makePayload(hasNewImage, req) {
 
 
 
-module.exports = { deleteSauce };
+module.exports = { deleteSauce, makePayload };
