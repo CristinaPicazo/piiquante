@@ -1,5 +1,3 @@
-
-const res = require("express/lib/response");
 const multer = require("multer");
 
 const storage = multer.diskStorage({

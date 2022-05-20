@@ -1,16 +1,17 @@
 const { Product } = require('../../models/Product.js');
-const { sendClientResponse } = require("./getSauceById");
+// const { sendClientResponse } = require("./getSauceById");
 const { makePayload } = require("./deleteSauce");
 const { userRouter } = require('../../routes/userRouter.js');
 const { User } = require('../../models/User.js');
 const { makeImageUrl } = require('./createSauce');
 const fs = require('fs');
+const { deleleteImage } = require('./deleteSauce');
 
 function updateSauce(req, res) {
     const {
         params: { id }
     } = req;
-    // const hasNewImage = req.file != null
+    const hasNewImage = req.file != null
     // const payload = makePayload(hasNewImage, req);
 
     Product.findByIdAndUpdate(id, req.body, (error, data) => {
@@ -24,13 +25,15 @@ function updateSauce(req, res) {
             if (!req.file) {
                 return res.status(200).send(data);
             } else {
-                fs.unlink(`./public/images/${data.imageUrl}`, (err) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                    data.imageUrl = makeImageUrl(req, req.file.filename);
+                console.log('data:', data)
+                console.log('data.imageUrl:', data.imageUrl)
+                // deleleteImage(data)
+                data.imageUrl = makeImageUrl(req, req.file.filename);
+                console.log('data.imageUrl2:', data.imageUrl)
+                console.log('data:', data)
+                
                     return res.status(200).send(data);
-                });
+                // });
             }
         }
         // if(req.file.filename == data.imageUrl){
@@ -44,12 +47,6 @@ function updateSauce(req, res) {
     });
 }
 
-//     Product.findByIdAndUpdate(id, payload)
-//         .then((dbResponse) => sendClientResponse(dbResponse, res))
-//         .then((product => deleteImage(product)))
-//         .then((res) => res.send({ message: "File deleted", res }))
-//         .catch(err => res.send({ message: err }))
-// };
 
 function deleteImage(product) {
     console.log('product:', product)

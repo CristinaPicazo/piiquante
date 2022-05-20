@@ -17,7 +17,6 @@ function sendClientResponse(product, res) {
         return res.status(404).send({ message: "Sauce not found" });
     }
     return res.status(200).send(product)
-    // return Promise.resolve(res.status(200).send(product).then(() => product));
 }
 
 

@@ -10,9 +10,9 @@ function createSauce(req, res) {
         return res.status(400).send({ message: "Image is required" });
     }
     const { fileName } = file;
+    console.log('fileName:', fileName)
     const sauce = JSON.parse(body.sauce);
 
-    // const file.fieldname = `${body.userId}-${Date.now()}-${file.originalname}`.replace(/\s/g, '-');
     const { userId, name, manufacturer, description, mainPepper, heat } = sauce;
 
     const newProduct = new Product({

@@ -6,8 +6,6 @@ const sauceRouter = express.Router();
 const { checkToken } = require("../middleware/checkToken");
 const { upload } = require("../middleware/multer");
 
-// const { upload } = require("../middleware/multer");
-
 sauceRouter.use(checkToken);
 // Routes
 sauceRouter.get('/', getSauces);
