@@ -4,41 +4,60 @@ const { getSauceById } = require("./getSauceById");
 
 function likeSauce(req, res) {
     const { like, userId } = req.body;
-    console.log('userId:', userId)
-    console.log('like:', like)
-    const productId = req.params.id;
-    const product = Product.findById(req.params.id)
-    checkUsersLiked(product, productId, userId, like);
-    
-    // Product.findByIdAndUpdate(id, req.body, (error, data) => {
-    // }
+    const id = req.params.id;
+    const product = Product.findById(id)
+        .then(product => checkUsersLiked(product, userId, like))
+        .then(product => dbSaveLikes(req, res, product))
+        .catch(err => res.status(500).send(err))
 }
 
-function checkUsersLiked(product, productId, userId, like) {//product
-    switch (like) {
-        case 1:
-    
-            product.findByIdAndUpdate(productId, { likes: like }, { $push: { usersLiked: userId } }, { new: true })
-            if (product.usersLiked.find(userId)) {
-                return message = "You already liked this sauce";
-            }
-            product.insertOne({ likes: like }, { $push: { usersLiked: userId } } )
-            break;
-        case -1:
-            if (product.usersDisliked.includes(userId)) {
-                return message = "You already disliked this sauce";
-            }
+function checkUsersLiked(product, userId, like) {
+    const usersLiked = product.usersLiked;
+    const usersDisliked = product.usersDisliked;
 
-            product.insertOne({ dislikes: like }, { $push: { usersDisliked: userId } })
-            break;
-        case 0:
-            if ((product.usersLiked.includes(userId)) || (product.usersDisliked.includes(userId))) {
-                return message = "User removed from liked or dislike sauces";
-            }
-            product.updateOne({ likes: like }, { dislikes: like }, { $pop: { usersLiked: userId }, $pop: { usersDisliked: userId } })
-            break;
+    if (like == 1) {
+        product.likes++;
+        if ((usersLiked.indexOf(userId) > -1)) {
+            return message = "You already liked this sauce"
+        }
+        usersLiked.push(userId);
     }
 
+    if (like == -1) {
+        product.dislikes++;
+        if (usersDisliked.indexOf(userId) > -1) {
+            return message = "You already disliked this sauce"
+        }
+        usersDisliked.push(userId);
+
+
+    }
+    if (like == 0) {
+        if (usersLiked.indexOf(userId) > -1) {
+            product.likes--;
+            deleteUserLikes(usersLiked, userId)
+        }
+        if (usersDisliked.indexOf(userId) > -1) {
+            product.dislikes--;
+            deleteUserLikes(usersDisliked, userId)
+        }
+    }
+    return product;
+}
+
+function deleteUserLikes(usersLikes, userId) {
+    for (var i = 0; i <= usersLikes.length; i++) {
+        if (usersLikes[i] == userId) {
+            usersLikes.splice(i, 1)
+        }
+    }
+    return usersLikes;
+}
+function dbSaveLikes(req, res, product) {
+    if (!product) return;
+    console.log('product:', product)
+    product.save().then(product => res.status(200).send({ product }))
+        .catch(err => res.status(500).send(err))
 }
 
 module.exports = { likeSauce };

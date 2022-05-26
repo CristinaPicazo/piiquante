@@ -19,13 +19,8 @@ function deleleteImage(item) {
     return unlink(`./images/${fileName}`)
 }
 
-function makePayload(hasNewImage, req) {
-    const payload = JSON.parse(req.body.sauce)
-    if (!hasNewImage) return req.body;
-    payload.imageUrl = makeImageUrl(req, req.file.fileName);
-    return payload;
-}
 
 
 
-module.exports = { deleteSauce, makePayload, deleleteImage };
+
+module.exports = { deleteSauce, deleleteImage };
