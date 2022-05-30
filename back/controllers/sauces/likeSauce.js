@@ -1,6 +1,4 @@
 const { Product } = require('../../models/Product.js');
-// const { getSauces } = require("./getSauces");
-const { getSauceById } = require("./getSauceById");
 
 function likeSauce(req, res) {
     const { like, userId } = req.body;

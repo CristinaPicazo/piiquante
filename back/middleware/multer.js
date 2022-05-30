@@ -2,12 +2,12 @@ const multer = require("multer");
 
 const storage = multer.diskStorage({
   destination: "images/",
-  filename: function (req, file, cb) {
-    cb(null, makeFilename(req, file))
+  filename: function (_, file, cb) {
+    cb(null, makeFilename(file))
   }
 })
 
-function makeFilename(req, file) {
+function makeFilename(file) {
   const fileName = `${Date.now()}-${file.originalname}`.replace(/\s/g, '-');
   file.fileName = fileName;
   return fileName

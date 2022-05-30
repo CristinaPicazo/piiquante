@@ -11,7 +11,7 @@ sauceRouter.use(checkToken);
 sauceRouter.get('/', getSauces);
 sauceRouter.get('/:id', getSauceById);
 sauceRouter.post('/', upload.single("image"), createSauce);
-sauceRouter.put('/:id', updateSauce);
+sauceRouter.put('/:id', upload.single("image"), updateSauce);
 sauceRouter.delete('/:id', deleteSauce);
 sauceRouter.post('/:id/like', likeSauce);
 
