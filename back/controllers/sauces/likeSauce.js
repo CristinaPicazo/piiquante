@@ -5,7 +5,7 @@ function likeSauce(req, res) {
     const id = req.params.id;
     const product = Product.findById(id)
         .then(product => checkUsersLiked(product, userId, like))
-        .then(product => dbSaveLikes(req, res, product))
+        .then(product => dbSaveLikesDislikes(req, res, product))
         .catch(err => res.status(500).send(err))
 }
 
@@ -51,9 +51,10 @@ function deleteUserLikes(usersLikes, userId) {
     }
     return usersLikes;
 }
-function dbSaveLikes(req, res, product) {
+
+// Send likes or dislikes to db
+function dbSaveLikesDislikes(req, res, product) {
     if (!product) return;
-    console.log('product:', product)
     product.save().then(product => res.status(200).send({ product }))
         .catch(err => res.status(500).send(err))
 }

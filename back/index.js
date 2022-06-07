@@ -15,7 +15,3 @@ app.use("/api/sauces", sauceRouter);
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
-
-
-
-// User.deleteMany({}).then(() => console.log("Removed all users"));

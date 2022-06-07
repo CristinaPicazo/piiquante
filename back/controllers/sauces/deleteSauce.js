@@ -11,7 +11,6 @@ function deleteSauce(req, res) {
             console.log('err:', err)
             return res.status(500).send({ message: err });
         });
-
 }
 
 function deleleteImage(item) {
