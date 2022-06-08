@@ -2,21 +2,36 @@ const { Product } = require('../../models/Product.js');
 
 
 function getSauceById(req, res) {
-    getSaucesById(req, res)
-        .then((product) => sendClientResponse(product, res))
-        .catch(err => res.status(500).send(err))
+    try {
+        getSaucesById(req, res)
+            .then((product) => sendClientResponse(product, res))
+            .catch(err => res.status(500).send(err))
+    } catch (err) {
+        console.log('err:', err)
+        res.status(500).send({ message: "Internal error", err })
+    }
 }
 
 function getSaucesById(req, res) {
-    const { id } = req.params;
-    return Product.findById(id)
+    try {
+        const { id } = req.params;
+        return Product.findById(id)
+    } catch (err) {
+        console.log('err:', err)
+        res.status(500).send({ message: "Internal error", err })
+    }
 }
 
 function sendClientResponse(product, res) {
-    if (product == null) {
-        return res.status(404).send({ message: "Sauce not found" });
+    try {
+        if (product == null) {
+            return res.status(404).send({ message: "Sauce not found" });
+        }
+        return res.status(200).send(product)
+    } catch (err) {
+        console.log('err:', err)
+        res.status(500).send({ message: "Internal error", err })
     }
-    return res.status(200).send(product)
 }
 
 

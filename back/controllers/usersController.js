@@ -30,8 +30,13 @@ async function signup(req, res) {
 }
 
 function hashPassword(password) {
-    const saltRounds = 10;
-    return bcrypt.hash(password, saltRounds);
+    try {
+        const saltRounds = 10;
+        return bcrypt.hash(password, saltRounds);
+    } catch (err) {
+        console.log('err:', err)
+        res.status(500).send({ message: "Internal error", err })
+    }
 }
 
 
@@ -64,8 +69,13 @@ async function login(req, res) {
 }
 
 function createToken(email) {
-    const jwtPassword = process.env.JWT_PASSWORD;
-    return jwt.sign({ email: email }, jwtPassword, { expiresIn: '24h' });
+    try {
+        const jwtPassword = process.env.JWT_PASSWORD;
+        return jwt.sign({ email: email }, jwtPassword, { expiresIn: '24h' });
+    } catch (err) {
+        console.log('err:', err)
+        res.status(500).send({ message: "Internal error", err })
+    }
 }
 
 

@@ -8,9 +8,14 @@ const storage = multer.diskStorage({
 })
 
 function makeFilename(file) {
+  try{
   const fileName = `${Date.now()}-${file.originalname}`.replace(/\s/g, '-');
   file.fileName = fileName;
   return fileName
+} catch (err) {
+  console.log('err:', err)
+  res.status(500).send({ message: "Internal error", err })
+}
 }
 
 const fileFilter = (req, file, cb) => {

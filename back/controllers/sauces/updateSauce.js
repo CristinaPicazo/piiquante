@@ -11,6 +11,8 @@ async function updateSauce(req, res) {
         const sauce = getSauceFromBody(req)
         const id = req.params.id;
 
+        checkIfUserOwnsSauce(req, res, next)
+
         if (req.file != null) {
             // Wait for the picture to be updated
             await addImageUrlToSauce(req, sauce)
@@ -57,7 +59,38 @@ function deletePreviousImage(Product, id) {
 
 // Add new picture to the sauce
 function addImageUrlToSauce(req, sauce) {
-    sauce.imageUrl = makeImageUrl(req, req.file.filename)
+    try {
+        sauce.imageUrl = makeImageUrl(req, req.file.filename)
+    }
+    catch (error) {
+        console.log('error:', error)
+        return res.status(500).send(error);
+    }
+}
+
+//Check if user own the sauce
+function checkIfUserOwnsSauce(req, res, next) {
+    try {
+        const id = req.params.id;
+        const userId = req.userId;
+        Product.findById(id, function (err, item) {
+            try {
+                if (item.userId != userId) {
+                    return res.status(403).send({ message: "403: unauthorized request, you don't own this sauce" });
+                }
+                next();
+            }
+            catch (err) {
+                console.log('error:', err)
+                return res.status(500).send(err);
+            }
+        })
+
+    }
+    catch (error) {
+        console.log('error:', error)
+        return res.status(500).send(error);
+    }
 }
 
 module.exports = { updateSauce }

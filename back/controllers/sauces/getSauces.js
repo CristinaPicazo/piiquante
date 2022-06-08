@@ -1,9 +1,14 @@
 const { Product } = require('../../models/Product.js');
 
 function getSauces(req, res) {
-    Product.find({})
-        .then((products) => res.status(200).send(products))
-        .catch((err) => res.status(500).send(err));
+    try {
+        Product.find({})
+            .then((products) => res.status(200).send(products))
+            .catch((err) => res.status(500).send(err));
+    } catch (err) {
+        console.log('err:', err)
+        res.status(500).send({ message: "Internal error", err })
+    }
 }
 
 module.exports = { getSauces };

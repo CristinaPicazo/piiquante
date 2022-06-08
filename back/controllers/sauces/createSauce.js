@@ -5,34 +5,40 @@ function makeImageUrl(req, fileName) {
 }
 
 function createSauce(req, res) {
-    const { body, file } = req;
-    if (!file) {
-        return res.status(400).send({ message: "Image is required" });
+    try {
+        const { body, file } = req;
+        if (!file) {
+            return res.status(400).send({ message: "Image is required" });
+        }
+        const { fileName } = file;
+        const sauce = JSON.parse(body.sauce);
+
+        const { userId, name, manufacturer, description, mainPepper, heat } = sauce;
+
+        const newProduct = new Product({
+            userId,
+            name,
+            manufacturer,
+            description,
+            mainPepper,
+            imageUrl: makeImageUrl(req, file.fileName),
+            heat,
+            likes: 0,
+            dislikes: 0,
+            usersLiked: [],
+            usersDisliked: [],
+        });
+        newProduct
+            .save()
+            .then((message) => {
+                res.status(201).send({ message: message });
+                console.log("Sauce created: ", message);
+            })
+            .catch(err => res.status(500).send(err))
     }
-    const { fileName } = file;
-    const sauce = JSON.parse(body.sauce);
-
-    const { userId, name, manufacturer, description, mainPepper, heat } = sauce;
-
-    const newProduct = new Product({
-        userId,
-        name,
-        manufacturer,
-        description,
-        mainPepper,
-        imageUrl: makeImageUrl(req, file.fileName),
-        heat,
-        likes: 0,
-        dislikes: 0,
-        usersLiked: [],
-        usersDisliked: [],
-    });
-    newProduct
-        .save()
-        .then((message) => {
-            res.status(201).send({ message: message });
-            console.log("Sauce created: ", message);
-        })
-        .catch(err => res.status(500).send(err))
+    catch (err) {
+        console.log('error:', err)
+        return res.status(500).send(err);
+    }
 }
 module.exports = { createSauce, makeImageUrl };
