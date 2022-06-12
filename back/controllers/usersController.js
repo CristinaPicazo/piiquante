@@ -54,7 +54,7 @@ async function login(req, res) {
                         return res.status(500).send({ message: "Incorrect password " + err })
                     }
                     if (result) {
-                        const token = createToken(email)
+                        const token = createToken(email, user?._id)
                         res.status(200).send({
                             userId: user?._id,
                             token: token
@@ -68,10 +68,10 @@ async function login(req, res) {
     }
 }
 
-function createToken(email) {
+function createToken(email, userId) {
     try {
         const jwtPassword = process.env.JWT_PASSWORD;
-        return jwt.sign({ email: email }, jwtPassword, { expiresIn: '24h' });
+        return jwt.sign({ email: email, userId: userId }, jwtPassword, { expiresIn: '24h' });
     } catch (err) {
         console.log('err:', err)
         res.status(500).send({ message: "Internal error", err })

@@ -19,3 +19,15 @@ content-type: application/json
 DELETE http://localhost:3000/api/sauce/627ab2fd3264a3b6a1da43e3 HTTP/1.1
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2E0YmZkMzI2NjVhYjM5YjYzNmQyMyIsImlhdCI6MTQ5NjQ5NjQwOCwiZXhwIjoxNDk2NDk2NjA4fQ.
+
+###
+PUT http://localhost:3000/api/sauces/62a0ca3f59aeae72dd6e7e60 HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhc2QyQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYyNmZmYzM4NjA0YmVmNWRiMTczMzQzYiIsImlhdCI6MTY1NTA1MDQ2NywiZXhwIjoxNjU1MTM2ODY3fQ.q-Z_bGNZLNwYBK9ZLBgHxi6P3tG76MqTzKQTDRT8LgI
+
+{"name":"book45433333","manufacturer":"book","description":"book","mainPepper":"book","heat":2,"userId":"626fb6338b2ebcc11a1dfdaf"}
+
+###
+DELETE http://localhost:3000/api/sauces/62a0ca3f59aeae72dd6e7e60 HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhc2QyQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYyNmZmYzM4NjA0YmVmNWRiMTczMzQzYiIsImlhdCI6MTY1NTA1MDQ2NywiZXhwIjoxNjU1MTM2ODY3fQ.q-Z_bGNZLNwYBK9ZLBgHxi6P3tG76MqTzKQTDRT8LgI

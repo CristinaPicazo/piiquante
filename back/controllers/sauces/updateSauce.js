@@ -1,17 +1,19 @@
-const { reject } = require('bcrypt/promises');
-const { json } = require('express/lib/response');
-const { JsonWebTokenError } = require('jsonwebtoken');
 const { Product } = require('../../models/Product');
 const { sendClientResponse } = require("./getSauceById");
 const { makeImageUrl } = require('./createSauce');
 const { deleleteImage } = require('./deleteSauce');
+const { isUserTheOwner } = require('./helpers/isUserTheOwner');
+
 
 async function updateSauce(req, res) {
     try {
         const sauce = getSauceFromBody(req)
+        console.log('sauce:', sauce)
         const id = req.params.id;
 
-        checkIfUserOwnsSauce(req, res, next)
+        const isUser = await isUserTheOwner(req)
+        if (!isUser) return res.status(403).send({ message: "403: unauthorized request, you don't own this sauce" });
+
 
         if (req.file != null) {
             // Wait for the picture to be updated
@@ -24,7 +26,7 @@ async function updateSauce(req, res) {
         sendClientResponse(result, res)
 
     } catch (error) {
-        console.log('error:', error)
+        console.error(error)
         return res.status(500).send(error);
     }
 }
@@ -69,28 +71,9 @@ function addImageUrlToSauce(req, sauce) {
 }
 
 //Check if user own the sauce
-function checkIfUserOwnsSauce(req, res, next) {
-    try {
-        const id = req.params.id;
-        const userId = req.userId;
-        Product.findById(id, function (err, item) {
-            try {
-                if (item.userId != userId) {
-                    return res.status(403).send({ message: "403: unauthorized request, you don't own this sauce" });
-                }
-                next();
-            }
-            catch (err) {
-                console.log('error:', err)
-                return res.status(500).send(err);
-            }
-        })
+//TO DO
+// I need the user _id to check if the user owns the sauce
 
-    }
-    catch (error) {
-        console.log('error:', error)
-        return res.status(500).send(error);
-    }
-}
+
 
 module.exports = { updateSauce }

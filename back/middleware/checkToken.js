@@ -16,6 +16,7 @@ function checkToken(req, res, next) {
             if (err) {
                 return res.status(401).send({ message: "Invalid token" + err })
             }
+            req.userId = decoded.userId;
         });
         next()
     }

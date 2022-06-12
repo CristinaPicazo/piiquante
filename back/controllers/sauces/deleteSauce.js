@@ -1,10 +1,16 @@
 const { Product } = require('../../models/Product.js');
 const fs = require('fs');
 const unlink = fs.promises.unlink;
+const { isUserTheOwner } = require('./helpers/isUserTheOwner');
 
-function deleteSauce(req, res) {
+
+async function deleteSauce(req, res) {
     try {
         const id = req.params.id;
+
+        const isUser = await isUserTheOwner(req)
+        if (!isUser) return res.status(403).send({ message: "403: unauthorized request, you don't own this sauce" });
+
         Product.findByIdAndDelete(id)
             .then((item) => deleleteImage(item))
             .then((response) => res.send({ message: "File deleted", response }))
