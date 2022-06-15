@@ -21,3 +21,6 @@ Secure API for a Review App with the folling options:
   * Run ng serve for a dev server within front and back folders
   * Navigate to http://localhost:4200/
   * There is a .env.example file to see and example of the data needed for the database
+
+# Example Desktop project
+  ![Example](https://ibb.co/z4xjZdj)
