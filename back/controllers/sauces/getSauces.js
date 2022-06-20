@@ -6,7 +6,7 @@ function getSauces(req, res) {
             .then((products) => res.status(200).send(products))
             .catch((err) => res.status(500).send(err));
     } catch (err) {
-        console.log('err:', err)
+        console.error(err)
         res.status(500).send({ message: "Internal error", err })
     }
 }

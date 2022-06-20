@@ -8,7 +8,6 @@ const { isUserTheOwner } = require('./helpers/isUserTheOwner');
 async function updateSauce(req, res) {
     try {
         const sauce = getSauceFromBody(req)
-        console.log('sauce:', sauce)
         const id = req.params.id;
 
         const isUser = await isUserTheOwner(req)
@@ -25,9 +24,9 @@ async function updateSauce(req, res) {
         const result = await Product.findByIdAndUpdate(id, sauce)
         sendClientResponse(result, res)
 
-    } catch (error) {
-        console.error(error)
-        return res.status(500).send(error);
+    } catch (err) {
+        console.error(err)
+        return res.status(500).send(err);
     }
 }
 
@@ -42,9 +41,9 @@ function getSauceFromBody(req) {
             sauce = req.body;
         }
         return sauce;
-    } catch (error) {
-        console.log('error:', error)
-        return res.status(500).send(error);
+    } catch (err) {
+        console.error(err)
+        return res.status(500).send(err);
     }
 }
 
@@ -53,9 +52,9 @@ function deletePreviousImage(Product, id) {
         Product.findById(id, function (err, item) {
             deleleteImage(item)
         })
-    } catch (error) {
-        console.log('error:', error)
-        return res.status(500).send(error);
+    } catch (err) {
+        console.error(err)
+        return res.status(500).send(err);
     }
 }
 
@@ -64,16 +63,10 @@ function addImageUrlToSauce(req, sauce) {
     try {
         sauce.imageUrl = makeImageUrl(req, req.file.filename)
     }
-    catch (error) {
-        console.log('error:', error)
-        return res.status(500).send(error);
+    catch (err) {
+        console.error(err)
+        return res.status(500).send(err);
     }
 }
-
-//Check if user own the sauce
-//TO DO
-// I need the user _id to check if the user owns the sauce
-
-
 
 module.exports = { updateSauce }

@@ -37,7 +37,7 @@ function createSauce(req, res) {
             .catch(err => res.status(500).send(err))
     }
     catch (err) {
-        console.log('error:', err)
+        console.error(err)
         return res.status(500).send(err);
     }
 }

@@ -34,7 +34,7 @@ function hashPassword(password) {
         const saltRounds = 10;
         return bcrypt.hash(password, saltRounds);
     } catch (err) {
-        console.log('err:', err)
+        console.error(err)
         res.status(500).send({ message: "Internal error", err })
     }
 }
@@ -63,7 +63,7 @@ async function login(req, res) {
                 })
             });
     } catch (err) {
-        console.log('err:', err)
+        console.error(err)
         res.status(500).send({ message: "Internal error", err })
     }
 }
@@ -73,11 +73,9 @@ function createToken(email, userId) {
         const jwtPassword = process.env.JWT_PASSWORD;
         return jwt.sign({ email: email, userId: userId }, jwtPassword, { expiresIn: '24h' });
     } catch (err) {
-        console.log('err:', err)
+        console.error(err)
         res.status(500).send({ message: "Internal error", err })
     }
 }
-
-
 
 module.exports = { login, signup };

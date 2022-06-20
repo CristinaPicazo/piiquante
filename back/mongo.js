@@ -8,5 +8,5 @@ const uri = `mongodb+srv://${username}:${password}@cluster0.rxnku.mongodb.net/${
 mongoose.connect(uri).then((() => {
     console.log("Connected to database!");
 })).catch(err => {
-    console.log("Connection failed!", err);
+    console.error("Connection failed!", err);
 });

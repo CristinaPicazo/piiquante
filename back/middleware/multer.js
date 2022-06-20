@@ -13,7 +13,7 @@ function makeFilename(file) {
   file.fileName = fileName;
   return fileName
 } catch (err) {
-  console.log('err:', err)
+  console.error(err)
   res.status(500).send({ message: "Internal error", err })
 }
 }

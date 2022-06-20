@@ -9,7 +9,7 @@ function likeSauce(req, res) {
             .then(product => dbSaveLikesDislikes(req, res, product))
             .catch(err => res.status(500).send(err))
     } catch (err) {
-        console.log('err:', err)
+        console.error(err)
         res.status(500).send({ message: "Internal error", err })
     }
 }
@@ -48,7 +48,7 @@ function checkUsersLiked(product, userId, like) {
         }
         return product;
     } catch (err) {
-        console.log('err:', err)
+        console.error(err)
         res.status(500).send({ message: "Internal error", err })
     }
 }
@@ -62,7 +62,7 @@ function deleteUserLikes(usersLikes, userId) {
         }
         return usersLikes;
     } catch (err) {
-        console.log('err:', err)
+        console.error(err)
         res.status(500).send({ message: "Internal error", err })
     }
 }
@@ -74,7 +74,7 @@ function dbSaveLikesDislikes(req, res, product) {
         product.save().then(product => res.status(200).send({ product }))
             .catch(err => res.status(500).send(err))
     } catch (err) {
-        console.log('err:', err)
+        console.error(err)
         res.status(500).send({ message: "Internal error", err })
     }
 }

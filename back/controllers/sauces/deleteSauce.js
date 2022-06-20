@@ -15,11 +15,11 @@ async function deleteSauce(req, res) {
             .then((item) => deleleteImage(item))
             .then((response) => res.send({ message: "File deleted", response }))
             .catch((err) => {
-                console.log('err:', err)
+                console.error(err)
                 return res.status(500).send({ message: err });
             });
     } catch (err) {
-        console.log('err:', err)
+        console.error(err)
         res.status(500).send({ message: "Internal error", err })
     }
 }
@@ -29,7 +29,7 @@ function deleleteImage(item) {
         const fileName = item.imageUrl.split('/').at(-1);
         return unlink(`./images/${fileName}`)
     } catch (err) {
-        console.log('err:', err)
+        console.error(err)
         res.status(500).send({ message: "Internal error", err })
     }
 }

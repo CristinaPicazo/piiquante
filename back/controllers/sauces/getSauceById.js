@@ -7,7 +7,7 @@ function getSauceById(req, res) {
             .then((product) => sendClientResponse(product, res))
             .catch(err => res.status(500).send(err))
     } catch (err) {
-        console.log('err:', err)
+        console.error(err)
         res.status(500).send({ message: "Internal error", err })
     }
 }
@@ -17,7 +17,7 @@ function getSaucesById(req, res) {
         const { id } = req.params;
         return Product.findById(id)
     } catch (err) {
-        console.log('err:', err)
+        console.error(err)
         res.status(500).send({ message: "Internal error", err })
     }
 }
@@ -29,7 +29,7 @@ function sendClientResponse(product, res) {
         }
         return res.status(200).send(product)
     } catch (err) {
-        console.log('err:', err)
+        console.error(err)
         res.status(500).send({ message: "Internal error", err })
     }
 }
